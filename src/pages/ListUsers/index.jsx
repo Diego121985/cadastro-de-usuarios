@@ -19,36 +19,38 @@ function ListerUsers() {
     }, []);
 
     async function deleteUsers(id) {
-        try {
-            await api.delete(`/usuarios/${id}`);
-            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
-        } catch (error) {
-            console.error('Erro ao deletar usuário:', error);
+
+        await api.delete(`/usuarios/${id}`);
+
+        const upadatedUsers =users.filter(user => user.id !== id)
+
+        setUsers(upadatedUsers)
+
+       }
+       
+
+            return (
+                <Container>
+                    <TopBackground />
+                    <Title>Lista de Usuários</Title>
+
+                    <ContainerUsers>
+                        {users.map((user) => (
+                            <CardUsers key={user.id}>
+                                <AvatarUser src={`https://avatar.iran.liara.run/public?username=${user.id}`} />
+                                <div>
+                                    <h3>{user.name}</h3>
+                                    <p>{user.age}</p>
+                                    <p>{user.email}</p>
+                                </div>
+                                <TrashIcon src={Trash} alt="lata de lixo" onClick={() => deleteUsers(user.id)} />
+                            </CardUsers>
+                        ))}
+                    </ContainerUsers>
+
+                    <Button type="button" onClick={() => navigate('/')}>Voltar</Button>
+                </Container>
+            );
         }
-    }
 
-    return (
-        <Container>
-            <TopBackground />
-            <Title>Lista de Usuários</Title>
-
-            <ContainerUsers>
-                {users.map((user) => (
-                    <CardUsers key={user.id}>
-                        <AvatarUser src={`https://avatar.iran.liara.run/public?username=${user.id}`} />
-                        <div>
-                            <h3>{user.name}</h3>
-                            <p>{user.age}</p>
-                            <p>{user.email}</p>
-                        </div>
-                        <TrashIcon src={Trash} alt="lata de lixo" onClick={() => deleteUsers(user.id)} />
-                    </CardUsers>
-                ))}
-            </ContainerUsers>
-
-            <Button type="button" onClick={() => navigate('/')}>Voltar</Button>
-        </Container>
-    );
-}
-
-export default ListerUsers;
+        export default ListerUsers;
